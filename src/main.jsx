@@ -9,7 +9,7 @@ createRoot(document.getElementById('root')).render(
     domain="dev-wp0y6m47y3odlou7.us.auth0.com"
     clientId="1FJz7ikKFiIuSGDRoPD3IQGEaKDrWB4b"
     authorizationParams={{
-      redirect_uri: '/dashboard'
+      redirect_uri: 'https://careerguide-two.vercel.app/'
     }}
   >
   
