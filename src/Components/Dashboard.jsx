@@ -67,7 +67,7 @@ export default function Dashboard() {
           onClick={() =>
             logout({
               logoutParams: {
-                returnTo: "http://localhost:5173/",
+                returnTo: "https://careerguide-two.vercel.app",
               },
             })
           }
