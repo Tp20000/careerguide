@@ -1,26 +1,26 @@
-import React, { useState, useEffect } from 'react';
-import {useAuth0} from "@auth0/auth0-react"
+import React, { useState, useEffect } from "react";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export default function Dashboard() {
   const [standards, setStandards] = useState([]);
-  const [stdInput, setStdInput] = useState('');
-  const {logout, user} = useAuth0();
-
+  const [stdInput, setStdInput] = useState("");
+  const { logout, user } = useAuth0();
+  console.log("userr",user);
   useEffect(() => {
-    const savedData = localStorage.getItem('academic-records');
+    const savedData = localStorage.getItem("academic-records");
     if (savedData) {
       setStandards(JSON.parse(savedData));
     }
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('academic-records', JSON.stringify(standards));
+    localStorage.setItem("academic-records", JSON.stringify(standards));
   }, [standards]);
 
   const addStandard = () => {
-    if (stdInput.trim() !== '') {
+    if (stdInput.trim() !== "") {
       setStandards([...standards, { std: stdInput, subjects: [] }]);
-      setStdInput('');
+      setStdInput("");
     }
   };
 
@@ -32,7 +32,7 @@ export default function Dashboard() {
 
   const addSubject = (stdIndex) => {
     const updated = [...standards];
-    updated[stdIndex].subjects.push({ name: '', marks: '', total: 100 });
+    updated[stdIndex].subjects.push({ name: "", marks: "", total: 100 });
     setStandards(updated);
   };
 
@@ -49,54 +49,53 @@ export default function Dashboard() {
   };
 
   const handleSubmit = () => {
-    console.log('Final Submitted Data:', standards);
-    alert('All marks saved successfully!');
+    console.log("Final Submitted Data:", standards);
+    alert("All marks saved successfully!");
   };
 
   return (
-
     <div className="min-h-screen bg-gradient-to-br from-gray-100 to-indigo-100 p-6 font-sans animate-fade-in">
-
-
-
-<nav className="bg-white shadow-md py-4 px-6 flex justify-between items-center fixed w-full top-0 z-50 left-0  ">
+      <nav className="bg-white shadow-md py-4 px-6 flex justify-between items-center fixed w-full top-0 z-50 left-0  ">
         <div className="text-blue-600 font-bold text-xl flex items-center select-none">
           <span className="mr-3"></span> Career Guide AI
         </div>
-        <div className='text-2xl font-bold text-gray-900 animate-fade-in tracking-wide'>Welcome,<span className='text-indigo-600'>{user.name}</span> </div>
+        <div className="text-2xl font-bold text-gray-900 animate-fade-in tracking-wide">
+          Welcome,<span className="text-indigo-600">{user.name}</span>{" "}
+        </div>
         <button
-      className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
-      onClick={() =>
-        logout({
-          logoutParams: {
-            returnTo: "http://localhost:5173/",
-          },
-        })
-      }
-    >
-      LogOut
-    </button>
+          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+          onClick={() =>
+            logout({
+              logoutParams: {
+                returnTo: "http://localhost:5173/",
+              },
+            })
+          }
+        >
+          LogOut
+        </button>
       </nav>
-
-
-
-
-
 
       <header className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white p-6 rounded-b-3xl shadow-xl pt-20">
         <div className="flex justify-between items-center animate-fade-in-down">
           <div>
-            <h1 className="text-3xl font-extrabold tracking-wide">Academic Records</h1>
-            <p className="text-sm opacity-80 mt-1">Track your academic performance</p>
+            <h1 className="text-3xl font-extrabold tracking-wide">
+              Academic Records
+            </h1>
+            <p className="text-sm opacity-80 mt-1">
+              Track your academic performance
+            </p>
           </div>
           <div className="bg-indigo-700 px-4 py-2 rounded-full text-sm hidden md:inline-block">
-            🎓 {standards.length} Standard{standards.length !== 1 && 's'} Added
+            🎓 {standards.length} Standard{standards.length !== 1 && "s"} Added
           </div>
         </div>
       </header>
 
       <div className="bg-gradient-to-br from-gray-100 to-indigo-100 shadow-xl p-6 mt-10 rounded-xl max-w-xl mx-auto backdrop-blur-md border border-indigo-200 animate-fade-in-up">
-        <label className="block font-semibold mb-2 text-indigo-800">Enter Standard Number</label>
+        <label className="block font-semibold mb-2 text-indigo-800">
+          Enter Standard Number
+        </label>
         <div className="flex gap-2">
           <input
             type="text"
@@ -115,9 +114,14 @@ export default function Dashboard() {
       </div>
 
       {standards.map((std, stdIdx) => (
-        <div key={stdIdx} className="max-w-3xl mx-auto mt-10 animate-fade-in-up">
+        <div
+          key={stdIdx}
+          className="max-w-3xl mx-auto mt-10 animate-fade-in-up"
+        >
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-2xl font-bold text-indigo-700 border-b-2 border-indigo-200 pb-1">Standard {std.std}</h2>
+            <h2 className="text-2xl font-bold text-indigo-700 border-b-2 border-indigo-200 pb-1">
+              Standard {std.std}
+            </h2>
             <button
               onClick={() => deleteStandard(stdIdx)}
               className="text-red-600 hover:text-red-800 font-semibold text-sm"
@@ -127,9 +131,16 @@ export default function Dashboard() {
           </div>
 
           {std.subjects.map((subject, subjIdx) => {
-            const percent = subject.total && subject.marks !== ''
-              ? Math.min(100, Math.round((parseFloat(subject.marks) / parseFloat(subject.total)) * 100))
-              : 0;
+            const percent =
+              subject.total && subject.marks !== ""
+                ? Math.min(
+                    100,
+                    Math.round(
+                      (parseFloat(subject.marks) / parseFloat(subject.total)) *
+                        100
+                    )
+                  )
+                : 0;
 
             return (
               <div
@@ -137,7 +148,9 @@ export default function Dashboard() {
                 className="bg-white/80 p-6 mb-6 rounded-xl shadow-lg border-l-4 border-indigo-500 transition-all duration-300 backdrop-blur-md hover:shadow-2xl"
               >
                 <div className="flex justify-between items-center">
-                  <h3 className="font-semibold text-lg mb-4 text-indigo-600">Subject #{subjIdx + 1}</h3>
+                  <h3 className="font-semibold text-lg mb-4 text-indigo-600">
+                    Subject #{subjIdx + 1}
+                  </h3>
                   <button
                     onClick={() => deleteSubject(stdIdx, subjIdx)}
                     className="text-red-500 hover:text-red-700 text-sm font-semibold"
@@ -150,21 +163,42 @@ export default function Dashboard() {
                     type="text"
                     placeholder="Subject name"
                     value={subject.name}
-                    onChange={(e) => handleSubjectChange(stdIdx, subjIdx, 'name', e.target.value)}
+                    onChange={(e) =>
+                      handleSubjectChange(
+                        stdIdx,
+                        subjIdx,
+                        "name",
+                        e.target.value
+                      )
+                    }
                     className="border rounded-lg px-3 py-2 w-full focus:ring-2 focus:ring-indigo-400 transition"
                   />
                   <input
                     type="number"
                     placeholder="Marks Obtained"
                     value={subject.marks}
-                    onChange={(e) => handleSubjectChange(stdIdx, subjIdx, 'marks', e.target.value)}
+                    onChange={(e) =>
+                      handleSubjectChange(
+                        stdIdx,
+                        subjIdx,
+                        "marks",
+                        e.target.value
+                      )
+                    }
                     className="border rounded-lg px-3 py-2 w-full focus:ring-2 focus:ring-indigo-400 transition"
                   />
                   <input
                     type="number"
                     placeholder="Total Marks"
                     value={subject.total}
-                    onChange={(e) => handleSubjectChange(stdIdx, subjIdx, 'total', e.target.value)}
+                    onChange={(e) =>
+                      handleSubjectChange(
+                        stdIdx,
+                        subjIdx,
+                        "total",
+                        e.target.value
+                      )
+                    }
                     className="border rounded-lg px-3 py-2 w-full focus:ring-2 focus:ring-indigo-400 transition"
                   />
                 </div>
